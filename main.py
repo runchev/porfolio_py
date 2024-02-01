@@ -1,7 +1,6 @@
 import streamlit as st
-import functions
+import pandas
 
-title_row = functions.get_row_from_csv(rowname="title", separator=";")
 info = """
 Hi i am Boro, designer with 10 years experience.
 
@@ -34,10 +33,18 @@ with col2:
 
 st.write("<b>Below you can find some of my projects, that i've build in, in my career.</b>", unsafe_allow_html=True)
 
-col3, col4 = st.columns(2)
+df = pandas.read_csv("data.csv", sep=";")
+
+col3, emptycol, col4 = st.columns([1.5,0.5,1.5])
 with col3:
-    for item in title_row[:10]:
-        st.write("<h3>" + item + "</h3>", unsafe_allow_html=True)
+    for index, item in df[:10].iterrows():
+        st.write("<h3>" + item["title"] + "</h3>", unsafe_allow_html=True)
+        st.write(item["description"])
+        st.image("images/" + item["image"])
+        st.link_button("Link", url=item["url"])
 with col4:
-    for item in title_row[10:]:
-        st.write("<h3>" + item + "</h3>", unsafe_allow_html=True)
+    for index, item in df[10:].iterrows():
+        st.write("<h3>" + item["title"] + "</h3>", unsafe_allow_html=True)
+        st.write(item["description"])
+        st.image("images/" + item["image"])
+        st.link_button("Link", url=item["url"])
